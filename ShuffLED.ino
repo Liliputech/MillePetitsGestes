@@ -1,15 +1,17 @@
+#include <FastLED.h>
 /*
 
 */
-#define NUMLED 40
-int ledArray[NUMLED];
+#define NUMLED 12
+#define DATA_PIN 3
+CRGB leds[NUMLED];
+int indexArray[NUMLED];
 
 void setup() {
   //remplir le tableau avec nombres de 0 à NUMLED
-  for(int i=0;i<NUMLED;i++) ledArray[i]=i;
+  for(int i=0;i<NUMLED;i++) indexArray[i]=i;
   Serial.begin(9600);
-  
-    
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUMLED); 
 }
 
 void shuffle(int shufArray[], int arrLength, int numPass) {
@@ -35,8 +37,10 @@ void shuffle(int shufArray[], int arrLength, int numPass) {
 }
 
 void loop() {
+    FastLED.clear(); 
+    FastLED.setBrightness(128);
     //on commence par mélanger le tableau / cartes / whatever
-    shuffle(ledArray, NUMLED, 60);
+    shuffle(indexArray, NUMLED, 60);
     //on affiche le tableau (qui contient maintenant les élément dans le desordre)
     for(int i=0 ; i<NUMLED ; i++) {
       /*
@@ -45,11 +49,22 @@ void loop() {
         puis ensuite seulement on allume la led dont le numéro est noté dans la case i
         (ici pour la simulation on affiche le num de la led qui s'allumerait)
       */
-      Serial.println(ledArray[i]); 
+      while (Serial.available() == 0) {};
+      while (Serial.available() > 0) Serial.read();
+      leds[indexArray[i]] = CRGB::Red;
+      FastLED.show();
+      Serial.println(indexArray[i]); 
     }
     
     Serial.println("Tout le tableau a été affiché! Appuyer sur entrée pour relancer la séquence");
     while (Serial.available() == 0) {};
+    while (Serial.available() > 0) Serial.read();
+    FastLED.setBrightness(128);
+    for( int i = 127; i >= 0 ; i-- ) {
+      FastLED.setBrightness(i);
+      FastLED.show();
+      delay(50);
+    }
     /*
       ici (simu) on attend une entrée sur le port série pour réinitialiser la séquence.
       Sinon c'est là qu'on mettrai une boucle for qui passerai par toutes les LEDS pour fade out.
