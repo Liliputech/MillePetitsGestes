@@ -2,7 +2,8 @@
 /*
 
 */
-#define NUMLED 12
+#define NUMLED 120
+#define BRIGHTNESS 64
 #define DATA_PIN 3
 CRGB leds[NUMLED];
 int indexArray[NUMLED];
@@ -37,10 +38,9 @@ void shuffle(int shufArray[], int arrLength, int numPass) {
 }
 
 void loop() {
-    FastLED.clear(); 
-    FastLED.setBrightness(128);
+    FastLED.clear();
     //on commence par mélanger le tableau / cartes / whatever
-    shuffle(indexArray, NUMLED, 60);
+    shuffle(indexArray, NUMLED, NUMLED);
     //on affiche le tableau (qui contient maintenant les élément dans le desordre)
     for(int i=0 ; i<NUMLED ; i++) {
       /*
@@ -49,18 +49,21 @@ void loop() {
         puis ensuite seulement on allume la led dont le numéro est noté dans la case i
         (ici pour la simulation on affiche le num de la led qui s'allumerait)
       */
-      while (Serial.available() == 0) {};
-      while (Serial.available() > 0) Serial.read();
+      delay(500);
+      /* Décoration
+      for(int j=0 ; j < 5 ; j++) {
+         leds[indexArray[i]+j].setBrightness(j*50);
+         leds[indexArray[i]-j].setBrightness(j*50);
+      }
+      //*/
       leds[indexArray[i]] = CRGB::Red;
       FastLED.show();
-      Serial.println(indexArray[i]); 
+      Serial.println(indexArray[i]);
     }
     
     Serial.println("Tout le tableau a été affiché! Appuyer sur entrée pour relancer la séquence");
-    while (Serial.available() == 0) {};
-    while (Serial.available() > 0) Serial.read();
-    FastLED.setBrightness(128);
-    for( int i = 127; i >= 0 ; i-- ) {
+    delay(1000);
+    for( int i = BRIGHTNESS; i >= 0 ; i-- ) {
       FastLED.setBrightness(i);
       FastLED.show();
       delay(50);
