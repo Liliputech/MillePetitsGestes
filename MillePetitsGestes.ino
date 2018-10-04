@@ -1,6 +1,10 @@
 #include <WiFi.h>
 #include <DNSServer.h>
 
+//Audio
+#include <JQ6500_Serial/JQ6500_Serial.h>
+JQ6500_Serial mp3(16,17);
+
 //nécessaire avec la carte Wemos Lolin32
 //A placer AVANT fastled
 #define FASTLED_ALLOW_INTERRUPTS 0
@@ -41,6 +45,13 @@ void setup() {
   //remplir le tableau avec nombres de 0 à NUMLED
   for (int i = 0; i < NUMLED; i++) indexArray[i] = i;
   FastLED.addLeds<WS2812B, DATA_PIN, RGB>(leds, NUMLED);
+
+  //Initialisation module audio
+  mp3.begin(9600);
+  mp3.reset();
+  mp3.setVolume(30);
+  mp3.setSource(MP3_SRC_BUILTIN);
+  mp3.setEqualizer(MP3_EQ_NORMAL);
 }
 
 void shuffle(int shufArray[], int arrLength, int numPass) {
@@ -135,6 +146,7 @@ void loop() {
       leds[indexArray[i]] = CHSV(hue, 255, BRIGHTNESS); // couleur aléatoire sans fadein
       delay(10);
       FastLED.show();
+      mp3.play();
 
 
       //fondu couleur qui finit au blanc + effet flash
