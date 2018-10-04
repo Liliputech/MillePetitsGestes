@@ -1,5 +1,5 @@
-Installation réalisée pour CreartCom en collaboration avec Derrick Giscloux et Igor Deschamps.
-présentée à l'Ecole des Mines de Saint Etienne dans le cadre de la Fête de la Science 2018.
+"Mille Petits Gestes" est une installation artistique conçu par MP0804h (Igor Deschamps) et réalisée en collaboration avec Derrick Giscloux.
+Présentée au Musée de la Mine de Saint Etienne dans le cadre de la Fête de la Science 2018.
 
 Techniques et Concepts utilisés:
 
@@ -21,5 +21,7 @@ Le principe du portail captif est de restreindre l'accès à une unique page web
 En l'occurence nous redirigeons l'ensemble des requètes vers la page permettant de piloter l'installation, ce qui permet à l'opérateur de facilement retrouver la page de configuration.
 Cette technique est souvent utilisée pour les Wifi d'hotel ou d'hopitaux, ou toute première connection est renvoyée vers une page d'authentification avant de pouvoir naviguer sur l'internet.
 
-Réalisation Arthur Suzuki - 04/10/2018
+Conception Artistique : MP0804h (Igor Deschamps)
+Réalisation : Derrick Giscloux, Arthur Suzuki
+04/10/2018
 
